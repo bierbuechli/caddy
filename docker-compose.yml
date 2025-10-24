@@ -1,0 +1,21 @@
+services:
+  caddy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      # Prefer secrets in Portainer; .env works for local `docker compose`
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:
