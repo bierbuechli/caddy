@@ -1,20 +1,16 @@
-# Reusable snippet für Cloudflare DNS-01 (holt Wildcard-Zertifikate)
 (dns_cf) {
   tls {
     dns cloudflare {env.CLOUDFLARE_API_TOKEN}
   }
 }
 
-# 1) www -> apex Redirect
 www.bierbuechli.ch {
   import dns_cf
   redir https://bierbuechli.ch{uri} permanent
 }
 
-# 2) Apex + alle Subdomains -> Reverse Proxy zu deiner Ziel-IP:Port
 bierbuechli.ch, *.bierbuechli.ch {
   import dns_cf
 
-  # Alles an deinen Upstream (IP und Port anpassen!)
-  reverse_proxy 10.0.0.42:8080
+  reverse_proxy 10.0.0.5:3000
 }
