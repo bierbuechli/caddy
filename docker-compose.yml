@@ -1,9 +1,10 @@
 services:
   caddy:
-    image: caddy-w-cf:latest
     build:
       context: .
       dockerfile: Dockerfile
+      no_cache: true
+    container_name: caddy
     restart: unless-stopped
     environment:
       - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
@@ -12,10 +13,7 @@ services:
       - "443:443"
       - "443:443/udp"
     volumes:
-      - type: bind
-        source: /caddy/Caddyfile
-        target: /etc/caddy/Caddyfile
-
+      - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
 
